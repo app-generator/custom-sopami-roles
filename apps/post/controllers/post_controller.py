@@ -5,7 +5,7 @@ from extensions import db
 from apps.authentication.models.user_model import User, auth
 from apps.post.models.post_model import Post
 
-post_namespace = Namespace('Posts', description="Operations related to posts")
+post_namespace = Namespace('Posts (Can Mimic a Frontend and Admin Both)', description="Operations related to posts")
 
 # Define the post model for request validation
 post_request_model = post_namespace.model('PostRequest', {

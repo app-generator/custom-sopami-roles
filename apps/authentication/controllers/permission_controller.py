@@ -5,7 +5,7 @@ from apps.authentication.models.permission_model import Permission
 from apps.authentication.models.role_model import Role
 from apps.authentication.models.user_model import User, auth
 
-permission_namespace = Namespace('Permissions', description="Permission Operations")
+permission_namespace = Namespace('Permissions (Admin-Panel)', description="Permission Management Operations for Admins")
 
 # Define Swagger models for request validation
 permission_request_model = permission_namespace.model('PermissionRequest', {

@@ -3,7 +3,7 @@ from flask import request
 from apps.authentication.models.user_model import User
 from flask_jwt_extended import create_access_token, jwt_required
 
-auth_namespace = Namespace('Auth', description="Authentication Operations")
+auth_namespace = Namespace('Auth (Both Admin-Panel & Frontend)', description="Authentication Operations")
 
 # Define Swagger models for request validation
 user_request_model = auth_namespace.model('UserRequest', {
@@ -50,24 +50,3 @@ class Login(Resource):
         return {'message': 'Invalid username or password. Please check your credentials and try again.'}, 401
 
 
-# @auth_namespace.route('/register')
-# class Register(Resource):
-#     @auth_namespace.expect(user_request_model, validate=True)
-#     @auth_namespace.response(201, 'User created successfully')
-#     @auth_namespace.response(409, 'User already exists')
-#     @auth_namespace.response(500, 'Internal Server Error')
-#     def post(self):
-#         """Register a new user"""
-#         data = request.get_json()
-#         username = data['username']
-#         password = data['password']
-#
-#         try:
-#             # Assuming User.create_user handles user creation logic
-#             User.create_user(username=username, password=password)
-#             return {'message': 'User created successfully'}, 201
-#         except ValueError as e:
-#             return {'message': str(e)}, 409
-#         except Exception as e:
-#             print(f"Error: {e}")
-#             return {'message': 'An error occurred'}, 500

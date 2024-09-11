@@ -67,7 +67,8 @@ class User(db.Model):
             except ValueError as e:
                 print(f"Failed to create SuperAdmin: {e}")
         else:
-            print("SuperAdmin already exists.")
+            pass
+            # print("SuperAdmin already exists.")
 
 
 # Check user login and as well permissions
@@ -79,7 +80,6 @@ def auth(permission_name):
         def check_permission(*args, **kwargs):
             user_id = get_jwt_identity()
             user = User.query.get(user_id)
-            print("1----------------------", user.has_permission(permission_name))
             if not user or not user.has_permission(permission_name):
                 response = jsonify({'message': 'You do not have permission to access this resource'})
                 return make_response(response, 403)
@@ -88,10 +88,3 @@ def auth(permission_name):
         return check_permission
 
     return decorator
-
-
-
-
-# Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjA2MTc2OCwianRpIjoiMjc1ODk2NWMtYTExNS00YjQxLWJiZjgtNWM2MTUyM2M0N2NiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzI2MDYxNzY4LCJjc3JmIjoiNWMyY2UzMzMtM2NhMi00ZjRmLWExNmEtMWEzZDNhZTJhOGRjIiwiZXhwIjoxNzI2MTQ4MTY4fQ.Y4VFtPVoxKT5MYpuux4pFZP4_qLuyIgDx7MFb_AmVao
-
-# Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjA3OTYxMSwianRpIjoiOTUyMDIyNjUtM2MyZS00OTIyLTk2YWItZWZhMTE0Mzk3NDZlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MiwibmJmIjoxNzI2MDc5NjExLCJjc3JmIjoiOGQ4NzExODUtZjZmNi00ZmYzLTllZWMtMDM1M2I5NjUwMGVmIiwiZXhwIjoxNzI2MTY2MDExfQ.gJ5s2Ke081vjx5Tbo0_iBcQm6utb3hTGSbU-OaWuwXA

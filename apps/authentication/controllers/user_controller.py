@@ -4,7 +4,7 @@ from extensions import db
 from apps.authentication.models.user_model import User, auth
 from apps.authentication.models.role_model import Role
 
-user_namespace = Namespace('Users', description="User Management Operations")
+user_namespace = Namespace('Users (Admin-Panel)', description="User Management Operations for Admins | Create User API can be used at both end ")
 
 # Define Swagger models for request validation
 user_request_model = user_namespace.model('UserRequest', {
@@ -60,9 +60,7 @@ class UserList(Resource):
             return {'message': f"Roles with IDs {', '.join(map(str, missing_role_ids))} do not exist - Please create role first"}, 400
 
         # Create and add the new user
-        new_user = User(username=username, _password_hash=password)
-        db.session.add(new_user)
-        db.session.commit()
+        new_user = User.create_user(username=username, password=password)
 
         # Add roles to the new user
         roles = Role.query.filter(Role.id.in_(role_ids)).all()

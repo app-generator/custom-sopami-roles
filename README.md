@@ -1,24 +1,50 @@
-# START PROJECT
+## MAKE SURE YOU ARE USING PYTHON 3.12.0
 
-## ACTIVATE VIRTUAL ENVIRONMENT
+This project requires python 3.12.0, please make sure you are running the specified python version in your machine.
 
-Make sure virtual environment is created, and active.
+## INSTALL POETRY & ACTIVATE VIRTUAL ENVIRONMENT
 
-### LINK PYTHON INTERPRETER TO IDE
+### INSTALL POETRY
 
-After creating virtual environment, link python interpreter to IDE, for pycharm its under add interpreter, choose existing one. This will help automatically open new terminal in virtual environment, whenever you need to open a new terminal within IDE.
+If you don't have poetry package manager install in your system make sure it is installed 
 
-## INSTALL PACKAGES
-
-Make sure requirements.txt is there, now install all the packages with below command
-
-```
-pip install -r requirements.txt
+```shell
+pip install poetry
 ```
 
-## START SERVER
+### CREATE AND ACTIVATE VIRTUAL ENVIRONMENT
+
+- Go to project directory and first make sure you are going to create `.venv` folder in current directory for your virtual environment.
 
 ```
-python manage.py runserver
+export POETRY_VIRTUALENVS_IN_PROJECT=true
+```
+
+- Then  create & activate virtual environment with below command
+
+```shell
+poetry shell
+```
+
+### INSTALL PACKAGES
+
+Add all packages
+
+```
+poetry install
+```
+
+## RUN PROJECT
+
+For development
+
+```
+flask run --reload
+```
+
+For production
+
+```
+gunicorn -c gunicorn_config.py app:app
 ```
 

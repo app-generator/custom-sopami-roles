@@ -5,11 +5,12 @@ from apps.authentication.models.user_model import User, auth
 from apps.authentication.models.role_model import Role
 from apps.authentication.controllers.permission_controller import permission_response_model
 
-role_namespace = Namespace('Roles', description="Role Management Operations")
+role_namespace = Namespace('Roles (Admin-Panel)', description="Role Management Operations for Admins")
 
 # Define Swagger models for request validation
 role_request_model = role_namespace.model('RoleRequest', {
     'name': fields.String(required=True, description='The role name'),
+    'description': fields.String(description='A brief description of the role'),  # Added description
 })
 
 assign_role_model = role_namespace.model('AssignRoles', {
@@ -19,11 +20,11 @@ assign_role_model = role_namespace.model('AssignRoles', {
     })), description='List of user-role assignments (can be empty for individual assignments)'),
 })
 
-
 # Define Swagger models for response serialization
 role_response_model = role_namespace.model('RoleResponse', {
     'id': fields.Integer(readOnly=True, description='The unique identifier of a role'),
     'name': fields.String(description='The role name'),
+    'description': fields.String(description='A brief description of the role'),  # Added description
     'permissions': fields.List(fields.Nested(permission_response_model),
                                description='List of permissions associated with the role'),
 })
@@ -51,9 +52,12 @@ class RoleList(Resource):
         """Create a new role"""
         data = request.get_json()
         name = data['name']
+        description = data.get('description', '')  # Default to empty if not provided
+
         if Role.query.filter_by(name=name).first():
             return {'message': 'Role already exists'}, 409
-        new_role = Role(name=name)
+
+        new_role = Role(name=name, description=description)
         db.session.add(new_role)
         db.session.commit()
         return {'message': 'Role created successfully'}, 201
@@ -76,6 +80,8 @@ class RoleDetail(Resource):
         data = request.get_json()
         role = Role.query.get_or_404(role_id)
         role.name = data['name']
+        role.description = data.get('description', role.description)  # Update description if provided
+
         db.session.commit()
         return {'message': 'Role updated successfully'}, 200
 
@@ -146,11 +152,3 @@ class AssignRoles(Resource):
             return {'message': 'Roles assigned successfully to all users'}, 200
 
         return {'message': 'No valid data provided for role assignment'}, 400
-
-
-
-
-
-
-
-
